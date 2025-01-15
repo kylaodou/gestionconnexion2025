@@ -28,7 +28,7 @@
             <li class="has-submenu">
                 <a href="#" class="menu-link">
                     <i class='bx bxs-user'></i>
-                    <span class="text">Personnel</span>
+                    <span class="text">Personnels</span>
                     <i class="bx bx-chevron-right submenu-toggle"></i>
                 </a>
                 <ul class="submenu">

@@ -28,8 +28,6 @@ use App\Models\Personnel;
 */
 
 route::get('', [PageController::class, 'home']);
-route::get('/inscription', [AdministrateurController::class, 'formulaireinscription']);
-route::post('/inscriptionTraitement', [AdministrateurController::class, 'traitementInscription']);
 route::get('/connexion_inscription', [AdministrateurController::class, 'formulaire'])->name('login');
 route::get('/demande', [DemandeController::class, 'formulaire']);
 route::post('/demande_ajout_appareilTraitement', [DemandeController::class, 'traitementAjout']);
@@ -39,8 +37,13 @@ Route::get('/demande_personnel', [DemandePersonnelController::class, 'formulaire
 Route::post('/demande_ajout_appareil_personnelTraitement', [DemandePersonnelController::class, 'traitementAjout'])->name('demande_ajout_appareil_personnelTraitement');
 Route::post('/mes_appareils_personnel', [DemandePersonnelController::class, 'mesAppareils'])->name('mes_appareils_personnel');
 
-route::post('/connexion', [AdministrateurController::class, 'traitementConnexion']);
+// 5 tentatives de connexion par minute et par adresse IP
+route::post('/connexion', [AdministrateurController::class, 'traitementConnexion'])->middleware('throttle:5,1');
 Route::middleware(['auth'])->group(function () {
+    // Ajout d'un utilisateur : réservé aux administrateurs connectés
+    route::get('/inscription', [AdministrateurController::class, 'formulaireinscription']);
+    route::post('/inscriptionTraitement', [AdministrateurController::class, 'traitementInscription']);
+
     route::get('/dashboard', [PageController::class, 'dashboard']);
     route::get('/deconnexion', [AdministrateurController::class, 'deconnexion']);
 
